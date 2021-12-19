@@ -16,7 +16,7 @@ npm install --save-dev typescript ts-loader
 
 ## 3. tsconfig.json
 tsc --init  
-
+```
 {
   "compilerOptions": {
     "outDir": "./dist",
@@ -43,3 +43,4 @@ tsc --init
     "src"
   ]
 }
+```
