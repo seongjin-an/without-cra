@@ -2,6 +2,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const mode = process.env.NODE_ENV || 'development';
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
   mode,
@@ -26,10 +28,30 @@ module.exports = {
         test: /\.(ts|tsx)$/,
         use: ['babel-loader', 'ts-loader'],
       },
+      {
+        test: /\.(png|jpe?g|gif)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'assets/[contenthash].[ext]'
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(scss|css)$/,
+        use: [{
+          loader: MiniCssExtractPlugin.loader,
+          options: {
+            publicPath: ''
+          }
+        }, 'css-loader', 'sass-loader']
+      }
     ],
   },
 
-	output: {
+  output: {
     path: path.join(__dirname, '/dist'),
     filename: 'bundle.js',
   },
@@ -42,5 +64,9 @@ module.exports = {
       template: './public/index.html',
     }),
     // new webpack.HotModuleReplacementPlugin(),
+    new MiniCssExtractPlugin(),
+    new CleanWebpackPlugin({
+      cleanAfterEveryBuildPatterns: ['dist']
+    })
   ],
 };
