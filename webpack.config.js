@@ -4,7 +4,6 @@ const webpack = require('webpack');
 const mode = process.env.NODE_ENV || 'development';
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-
 module.exports = {
   mode,
   devServer: {
@@ -17,7 +16,7 @@ module.exports = {
   entry: {
     app: path.join(__dirname,  './src/index.tsx'),
   },
- 
+
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
@@ -27,6 +26,7 @@ module.exports = {
       {
         test: /\.(ts|tsx)$/,
         use: ['babel-loader', 'ts-loader'],
+        // exclude: path.join(__dirname, "/node_modules/")
       },
       {
         test: /\.(png|jpe?g|gif)$/,
@@ -52,12 +52,12 @@ module.exports = {
   },
 
   output: {
-    path: path.join(__dirname, '/dist'),
+    path: path.join(__dirname, '/build/static'),
     filename: 'bundle.js',
   },
 
   plugins: [
-		// new webpack.ProvidePlugin({
+    // new webpack.ProvidePlugin({
     //   React: 'react',
     // }),
     new HtmlWebpackPlugin({
@@ -66,7 +66,7 @@ module.exports = {
     // new webpack.HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin(),
     new CleanWebpackPlugin({
-      cleanAfterEveryBuildPatterns: ['dist']
+      cleanAfterEveryBuildPatterns: ['build']
     })
   ],
 };

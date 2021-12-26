@@ -1,8 +1,8 @@
 ## 1. initialize project
-npm init -y
+npm init --y
 ## 2. npm package
 // webpack  
-npm install --save-dev webpack webpack-dev-server webpack-cli html-webpack-plugin  
+npm install --save-dev webpack webpack-dev-server webpack-cli html-webpack-plugin file-loader css-loader clean-webpack-plugin mini-css-extract-plugin sass-loader 
 
 // babel   
 npm install --save-dev babel-loader @babel/core @babel/preset-env @babel/preset-react @babel/preset-typescript   
@@ -11,15 +11,15 @@ npm install --save-dev babel-loader @babel/core @babel/preset-env @babel/preset-
 npm install --save react react-dom   
 
 // typescript  
-npm install --save @types/react @types/react-dom   
-npm install --save-dev typescript ts-loader  
+npm install --save-dev @types/react @types/react-dom   
+npm install --save-dev typescript ts-loader ts-node
 
 ## 3. tsconfig.json
 tsc --init  
 ```
 {
   "compilerOptions": {
-    "outDir": "./dist",
+    "outDir": "./build",
     "target": "es5",
     "module": "esnext",
     "jsx": "react",
@@ -38,6 +38,7 @@ tsc --init
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "typeRoots": ["./node_modules/@types", "./src/types"]
   },
   "include": [
     "src"
@@ -57,20 +58,21 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const mode = process.env.NODE_ENV || 'development';
-
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 module.exports = {
   mode,
   devServer: {
     historyApiFallback: true,
-    inline: true,
+    // inline: true,
     port: 3000,
     hot: true,
-    publicPath: '/',
+    // publicPath: '/',
   },
   entry: {
-    app: path.join(__dirname,  'index.tsx'),
+    app: path.join(__dirname,  './src/index.tsx'),
   },
- 
+
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
@@ -78,25 +80,50 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.(ts|tsx)$/,
         use: ['babel-loader', 'ts-loader'],
+        // exclude: path.join(__dirname, "/node_modules/")
       },
+      {
+        test: /\.(png|jpe?g|gif)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'assets/[contenthash].[ext]'
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(scss|css)$/,
+        use: [{
+          loader: MiniCssExtractPlugin.loader,
+          options: {
+            publicPath: ''
+          }
+        }, 'css-loader', 'sass-loader']
+      }
     ],
   },
 
-	output: {
-    path: path.join(__dirname, '/dist'),
+  output: {
+    path: path.join(__dirname, '/build/static'),
     filename: 'bundle.js',
   },
 
   plugins: [
-		new webpack.ProvidePlugin({
-      React: 'react',
-    }),
+    // new webpack.ProvidePlugin({
+    //   React: 'react',
+    // }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
-    new webpack.HotModuleReplacementPlugin(),
+    // new webpack.HotModuleReplacementPlugin(),
+    new MiniCssExtractPlugin(),
+    new CleanWebpackPlugin({
+      cleanAfterEveryBuildPatterns: ['build']
+    })
   ],
 };
 ```
