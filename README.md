@@ -176,11 +176,9 @@ public/index.html
 ## 7. package.json
 ```
 "scripts": {
-    "dev": "webpack server --mode development --open --hot",
-    "build": "webpack --mode production",
-    //"prestart": "cross-env NODE_ENV=production npm run build",
-    //"start": "webpack --mode development"
-   "start": "webpack-dev-server --config ./webpack.config.js --mode development", // 추가
+    "test": "jest",
+    "dev": "NODE_ENV=development webpack serve --hot --progress",
+    "build": "NODE_ENV=production webpack --progress"
   }
 ```
 
