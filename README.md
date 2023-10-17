@@ -2,7 +2,7 @@
 npm init --y
 ## 2. npm package
 // webpack  
-npm install --save-dev webpack webpack-dev-server webpack-cli html-webpack-plugin file-loader url-loader css-loader clean-webpack-plugin mini-css-extract-plugin sass-loader 
+npm install --save-dev webpack webpack-dev-server webpack-cli html-webpack-plugin file-loader url-loader css-loader clean-webpack-plugin mini-css-extract-plugin sass-loader style-loader sass
 
 // babel   
 npm install --save-dev babel-loader @babel/core @babel/preset-env @babel/preset-react @babel/preset-typescript   
