@@ -183,3 +183,30 @@ public/index.html
    "start": "webpack-dev-server --config ./webpack.config.js --mode development", // 추가
   }
 ```
+
+## 8. jest install
+```
+npm i -D @testing-library/jest-dom @testing-library/react @types/jest babel-jest ts-jest
+npm i -D jest-environment-jsdom
+```
+
+## 9. jest.config.js
+```
+module.exports = {
+    moduleFileExtensions: ['js', 'json', 'jsx', 'ts', 'tsx', 'json'],
+    bail: false,
+    verbose: true,
+    transform: {
+        '^.+\\.(js|jsx)?$': 'babel-jest',
+        '^.+\\.(ts|tsx)?$': 'ts-jest',
+    },
+    testEnvironment: 'jsdom',
+    moduleNameMapper: {
+        '^@/(.*)$': '<rootDir>/$1',
+    },
+    transformIgnorePatterns: [
+        '/node_modules/',
+        '^.+\\.module\\.(css|sass|scss)$',
+    ],
+};
+```
